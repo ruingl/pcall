@@ -15,6 +15,7 @@ jobs:
         uses: pnpm/action-setup@v2
         with:
           version: 8
+
       - uses: actions/setup-node@v3
         with:
           node-version: 18
@@ -35,12 +36,16 @@ jobs:
 
       - name: check for changesets
         id: changesets
+        shell: bash
         run: |
-          if pnpm exec changeset status | grep -q '☝️'; then
+          if [ -n "$(ls .changeset/*.md 2>/dev/null)" ]; then
             echo "has_changesets=true" >> "$GITHUB_OUTPUT"
           else
             echo "has_changesets=false" >> "$GITHUB_OUTPUT"
           fi
+
+      - name: debug changeset output
+        run: echo "Has changesets? ${{ steps.changesets.outputs.has_changesets }}"
 
       - name: version & publish
         if: steps.changesets.outputs.has_changesets == 'true'
