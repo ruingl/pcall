@@ -1,0 +1,9 @@
+.changeset
+node_modules
+tests
+docs
+src
+tsconfig.json
+tsup.config.ts 
+eslint.config.mjs 
+typedoc.json
